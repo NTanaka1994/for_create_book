@@ -42,7 +42,7 @@ def marcovPredict(data,word,num):
 
 from janome.tokenizer import Tokenizer
 t=Tokenizer()
-f=open("jtec.txt",encoding="utf-8")
+f=open("sample.txt",encoding="utf-8")
 text=f.read()
 f.close()
 text=text.replace("「","")
