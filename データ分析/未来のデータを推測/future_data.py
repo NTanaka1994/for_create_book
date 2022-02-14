@@ -13,7 +13,7 @@ v=df["終値調整値"].values
 time=np.arange(0,len(v)-1,1)
 
 #最大値で割る
-yt=(v-min(v))/(max(v)-min(v))
+yt=v/max(v)
 yt=yt.reshape(-1,1)
 
 #データのズレを作成
@@ -21,6 +21,7 @@ x=[]
 y=[]
 for i in range(len(yt)-25):
     x.append(time[i:i+25])
+    #x.append(yt[i:i+25])
     y.append(yt[i+25])
 x=np.array(x).reshape(len(x),25,1)
 y=np.array(y).reshape(len(y),1)
@@ -29,6 +30,9 @@ y=np.array(y).reshape(len(y),1)
 n_hidden=300
 in_out_neurons=1
 length_of_sequence=x.shape[1]
+future_test=x[len(x)-1].T
+future_result=np.empty((0))
+time_length=future_test.shape[1]
 
 #モデル作成
 model=Sequential()
@@ -39,15 +43,15 @@ model.compile(loss="mean_squared_error",optimizer=Adam(lr=1e-3))
 
 #学習
 early_stopping=EarlyStopping(monitor="val_loss",mode="min",patience=10)
-model.fit(x,y,batch_size=100,epochs=200,validation_split=1.0,callbacks=[early_stopping])
+model.fit(x,y,batch_size=100,epochs=100,validation_split=1.0,callbacks=[early_stopping])
 
 #予測
 y_pred1=model.predict(x)
 
 #未来のデータ
-test=np.arange(len(v)-1,len(v)-1+50,1)
+test=np.arange(len(v)-1,len(v)-1+75,1)
 x_test=[]
-for i in range(50-25):
+for i in range(50):
     x_test.append(test[i:i+25])
 x_test=np.array(x_test).reshape(len(x_test),25,1)
 
@@ -55,7 +59,8 @@ y_pred2=model.predict(x_test)
 
 y_pred=np.vstack((y_pred1,y_pred2))   
 
-plt.plot(y*(max(v-min(v)))+min(v),label="real")
-plt.plot(y_pred*(max(v-min(v)))+min(v),label="predict")
+
+plt.plot(y*max(v),label="real")
+plt.plot(y_pred*max(v),label="predict")
 plt.legend()
 plt.show()
