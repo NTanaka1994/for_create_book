@@ -13,7 +13,7 @@ v=df["終値調整値"].values
 time=np.arange(0,len(v)-1,1)
 
 #最大値で割る
-yt=v/max(v)
+yt=(v-min(v))/(max(v)-min(v))
 yt=yt.reshape(-1,1)
 
 #データのズレを作成
@@ -55,7 +55,7 @@ y_pred2=model.predict(x_test)
 
 y_pred=np.vstack((y_pred1,y_pred2))   
 
-plt.plot(y*max(v),label="real")
-plt.plot(y_pred*max(v),label="predict")
+plt.plot(y*(max(v-min(v)))+min(v),label="real")
+plt.plot(y_pred*(max(v-min(v)))+min(v),label="predict")
 plt.legend()
 plt.show()
