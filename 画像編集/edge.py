@@ -2,17 +2,17 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-pic=Image.open("sample.png")
-pic=pic.convert(mode="L")
-pic=np.array(pic)
-h,w=pic.shape[0],pic.shape[1]
-dst=np.zeros((h,w))
+pic = Image.open("sample.png")
+pic = pic.convert(mode="L")
+pic = np.array(pic)
+h,w = pic.shape[0],pic.shape[1]
+dst = np.zeros((h,w))
 
 for y in range(h-2):
     for x in range(w-2):
-        dst[y][x]=abs(int(pic[y+1][x+1])-int(pic[y+2][x+1]))+abs(int(pic[y+1][x+1])-int(pic[y][x+1]))
-        dst[y][x]=dst[y][x]+abs(int(pic[y+1][x+1])-int(pic[y+1][x+2]))+abs(int(pic[y+1][x+1])-int(pic[y+1][x]))
-plt.imshow(dst,cmap="gray")
+        dst[y][x] = abs(int(pic[y+1][x+1])-int(pic[y+2][x+1]))+abs(int(pic[y+1][x+1])-int(pic[y][x+1]))
+        dst[y][x] = dst[y][x] + abs(int(pic[y+1][x+1])-int(pic[y+1][x+2])) + abs(int(pic[y+1][x+1])-int(pic[y+1][x]))
+plt.imshow(dst, cmap="gray")
 plt.savefig("edge1.png")
 plt.show()
 
