@@ -2,18 +2,18 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-pic=Image.open("sample.png")
-pic=pic.convert(mode="L")
-pic=np.array(pic)
-h,w=pic.shape[0],pic.shape[1]
+pic = Image.open("sample.png")
+pic = pic.convert(mode="L")
+pic = np.array(pic)
+h, w = pic.shape[0], pic.shape[1]
 
-hist=[]
+hist = []
 for i in range(256):
     hist.append(0)
 for y in range(h):
     for x in range(w):
-        hist[pic[y][x]]=hist[pic[y][x]]+1
-plt.bar(range(256),hist)
+        hist[pic[y][x]] = hist[pic[y][x]] + 1
+plt.bar(range(256), hist)
 plt.savefig("histgram.png")
 plt.show()
 
